@@ -1,36 +1,28 @@
-import axios from 'axios';
+import axios from "axios";
 
-const BASE_URL = 'https://reqres.in/api';
+const API_BASE_URL = "https://reqres.in/api";
 
-export async function listarUsuarios() {
-  const response = await axios.get(`${BASE_URL}/users?page=2`);
+export async function getUsers() {
+  const response = await axios.get(`${API_BASE_URL}/users`);
   return response.data;
 }
 
-export async function criarUsuario(nome: string, cargo: string) {
-  const response = await axios.post(`${BASE_URL}/users`, {
-    name: nome,
-    job: cargo,
-  });
+export async function getUserById(id: number) {
+  const response = await axios.get(`${API_BASE_URL}/users/${id}`);
   return response.data;
 }
 
-export async function atualizarUsuario(id: number, nome: string, cargo: string) {
-  const response = await axios.put(`${BASE_URL}/users/${id}`, {
-    name: nome,
-    job: cargo,
-  });
+export async function updateUserPut(id: number, userData: { name: string; job: string }) {
+  const response = await axios.put(`${API_BASE_URL}/users/${id}`, userData);
   return response.data;
 }
 
-export async function atualizarParcialUsuario(id: number, cargo: string) {
-  const response = await axios.patch(`${BASE_URL}/users/${id}`, {
-    job: cargo,
-  });
+export async function updateUserPatch(id: number, userData: { name: string; job: string }) {
+  const response = await axios.patch(`${API_BASE_URL}/users/${id}`, userData);
   return response.data;
 }
 
-export async function deletarUsuario(id: number) {
-  const response = await axios.delete(`${BASE_URL}/users/${id}`);
-  return response.status; // 204
+export async function deleteUser(id: number) {
+  const response = await axios.delete(`${API_BASE_URL}/users/${id}`);
+  return response.status;  // 204 No Content esperado
 }

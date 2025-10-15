@@ -1,31 +1,30 @@
-import {
-  listarUsuarios,
-  criarUsuario,
-  atualizarUsuario,
-  atualizarParcialUsuario,
-  deletarUsuario,
-} from './servicorest';
+import { getUsers, getUserById, updateUserPut, updateUserPatch, deleteUser } from "./servicorest";
 
 async function main() {
-  console.log('🟢 Listando usuários:');
-  const usuarios = await listarUsuarios();
-  console.log(usuarios);
+  try {
+    const users = await getUsers();
+    console.log("Lista de usuários:", users);
 
-  console.log('\n🟡 Criando usuário:');
-  const novo = await criarUsuario('João da Silva', 'Desenvolvedor');
-  console.log(novo);
+    const user = await getUserById(2);
+    console.log("Usuário com ID 2:", user);
 
-  console.log('\n🔵 Atualizando usuário (PUT):');
-  const atualizado = await atualizarUsuario(2, 'João Atualizado', 'Gerente');
-  console.log(atualizado);
+    const updatedPut = await updateUserPut(2, {
+      name: "mary",
+      job: "Developer",
+    });
+    console.log("Resultado PUT:", updatedPut);
 
-  console.log('\n🟣 Atualizando parcialmente usuário (PATCH):');
-  const parcial = await atualizarParcialUsuario(2, 'Diretor');
-  console.log(parcial);
+    const updatedPatch = await updateUserPatch(2, {
+      name: "mary Patch",
+      job: "QA",
+    });
+    console.log("Resultado PATCH:", updatedPatch);
 
-  console.log('\n🔴 Deletando usuário:');
-  const status = await deletarUsuario(2);
-  console.log(`Status HTTP: ${status}`);
+    const statusDelete = await deleteUser(2);
+    console.log("Status DELETE:", statusDelete);
+  } catch (error: any) {
+    console.error("Erro:", error.response?.data || error.message);
+  }
 }
 
-main().catch((err) => console.error('Erro:', err));
+main();
